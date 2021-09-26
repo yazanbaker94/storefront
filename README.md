@@ -11,7 +11,7 @@ As a user, I want a clean, easy to use user interface so that I can shop the onl
 
 
 DEPLOYED SANDBOX:
-
+https://qnett.csb.app/
 
 
 ![uml.png](uml.png)
