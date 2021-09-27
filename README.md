@@ -22,7 +22,7 @@ User sees a list of categories
 
 
 DEPLOYED SANDBOX:
-
+https://zwc2g.csb.app/
 
 
 ![simplecart.png](simplecart.png)
