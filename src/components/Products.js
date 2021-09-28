@@ -1,8 +1,11 @@
 import * as React from 'react';
 
 import {connect} from 'react-redux';
-import {getItems} from '../store/products';
+import {getItems, changeBasketItems } from '../store/actions/action';
+import { addItemsToCart } from '../store/actions/action';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
+import Button from '@mui/material/Button';
 
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -46,7 +49,12 @@ const Products = props => {
       setExpanded(!expanded);
     };
   
-   
+    function handleAdding(element) {
+      props.addItemsToCart(element);
+      props.changeBasketItems(element);
+      props.getItems(props.category.name);
+  }
+
     
 
         return (
@@ -63,7 +71,7 @@ const Products = props => {
 >
 <Grid item xs={3}>
 
-            {props.activeProducts.map((element) => {   
+            {props.products.activeProducts.map((element) => {   
                 return <Card sx={{ maxWidth: 345 }}>
               <CardHeader
                 avatar={
@@ -86,11 +94,20 @@ const Products = props => {
                 alt={element.name}
               />
               <CardContent>
+              <Typography variant="body2" color="textPrimary" component="h3" >
+                                Items In Stock: ({element.inStock})
+                            </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {element.description}
                 </Typography>
+                
               </CardContent>
+              
               <CardActions disableSpacing>
+              <Button size="small" color="primary" onClick={() => { handleAdding(element) }}>
+                            <AddShoppingCartIcon></AddShoppingCartIcon>
+                            Add To Cart
+                        </Button>
                 <IconButton aria-label="add to favorites">
                   <FavoriteIcon />
                 </IconButton>
@@ -123,10 +140,15 @@ const Products = props => {
         
         };
 
-const mapStateToProps = (state) => {
-    return state.products
-};
 
-const mapDispatchToProps = { getItems};
+function mapStateToProps(state) {
+  return {
+      category: state.categories.activeCategory,
+      products: state.products,
+      cartProducts: state.cart
+  };
+}
+
+const mapDispatchToProps = { getItems, addItemsToCart, changeBasketItems};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
