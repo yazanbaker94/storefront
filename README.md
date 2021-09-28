@@ -7,15 +7,15 @@ As a user, I want to interact with live inventory so that I have confidence that
 As a user, I want to know to that when I add an item to my cart, that it is removed from inventory so that no other users can purchase it
 
 <hr>
-##  USAGE
-            {
-                "name":"apple iphone",
-                "category":"electronics",
-                "description":"great new iphone",
-                "inStock":5,
-                "image":"https://m.media-amazon.com/images/I/71RYhD1uzpL._AC_SX522_.jpg"
+##          USAGE
 
-            }
+                                                {
+                                                "name":"apple iphone",
+                                                "category":"electronics",
+                                                "description":"great new iphone",
+                                                "inStock":5,
+                                                "image":"https://m.media-amazon.com/images/I/71RYhD1uzpL._AC_SX522_.jpg"
+                                                }
 
 
 
