@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import {connect} from 'react-redux';
-import {getItems, changeBasketItems } from '../store/products';
-import { addItemsToCart } from '../store/cart';
+import {getItems, changeBasketItems } from '../store/actions/action';
+import { addItemsToCart } from '../store/actions/action';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 import Button from '@mui/material/Button';
@@ -95,7 +95,7 @@ const Products = props => {
               />
               <CardContent>
               <Typography variant="body2" color="textPrimary" component="h3" >
-                                Items In Stock: ({element.basketCount})
+                                Items In Stock: ({element.inStock})
                             </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {element.description}

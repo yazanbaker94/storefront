@@ -10,7 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 
 import {connect} from 'react-redux';
-import {getItems} from '../store/products';
+import {getItems} from '../store/actions/action';
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
