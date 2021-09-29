@@ -1,11 +1,14 @@
 import * as React from 'react';
-
-import {connect} from 'react-redux';
-import {getItems, changeBasketItems } from '../store/actions/action';
-import { addItemsToCart } from '../store/actions/action';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { addItemsToCart } from '../store/actions/action';
+
+// card
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -16,14 +19,15 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Grid from '@mui/material/Grid';
-import Modal from './Modal'
+
+//
+import {connect} from 'react-redux';
+import {getItems, changeBasketItems } from '../store/actions/action';
 
 
 const ExpandMore = styled((props) => {
@@ -40,44 +44,54 @@ const ExpandMore = styled((props) => {
   }));
 
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
-const Products = props => {
-    // const classes = useStyles();
+export function TransitionsModal(props) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const [expanded, setExpanded] = React.useState(false);
+  function handleAdding(element) {
+    props.addItemsToCart(element);
+    props.changeBasketItems(element);
+    props.getItems(props.category.name);
+}
+
+const [expanded, setExpanded] = React.useState(true);
 
     const handleExpandClick = () => {
       setExpanded(!expanded);
     };
 
-    const handleIdClick = (id) => {
-      console.log(id)
-    };
-  
-    function handleAdding(element) {
-      props.addItemsToCart(element);
-      props.changeBasketItems(element);
-      props.getItems(props.category.name);
-  }
-
-    
-
-        return (
-            <>
-
-            
-  <Grid
-  container
-  spacing={0}
-  direction="column"
-  alignItems="center"
-  justify="center"
-  style={{ minHeight: '100vh' }}
->
-<Grid item xs={3}>
-
-            {props.products.activeProducts.map((element) => {   
-                return <Card sx={{ maxWidth: 345 }}>
+  return (
+    <div>
+        {props.products.activeProducts.map((element) =>  {
+            return <>
+            <Button onClick={handleOpen}>View Details</Button>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={open}>
+                <Box sx={style}>
+                <Card sx={{ maxWidth: 345 }}>
               <CardHeader
                 avatar={
                   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -113,10 +127,6 @@ const Products = props => {
                             <AddShoppingCartIcon></AddShoppingCartIcon>
                             Add To Cart
                         </Button>
-                        <Button size="small" color="primary" onClick={() => { handleIdClick(element.id) }}>
-                           
-                            Product Page
-                        </Button>
                         <Modal/>
                 <IconButton aria-label="add to favorites">
                   <FavoriteIcon />
@@ -143,22 +153,24 @@ const Products = props => {
                 </CardContent>
               </Collapse>
             </Card>
-            
-                        })} </Grid>   </Grid>  
-</>
-          );    
-        
-        };
-
-
-function mapStateToProps(state) {
-  return {
-      category: state.categories.activeCategory,
-      products: state.products,
-      cartProducts: state.cart
-  };
+                </Box>
+              </Fade>
+            </Modal>
+            </>
+        })}
+      
+    </div>
+  );
 }
 
-const mapDispatchToProps = { getItems, addItemsToCart, changeBasketItems};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+function mapStateToProps(state) {
+    return {
+        category: state.categories.activeCategory,
+        products: state.products,
+        cartProducts: state.cart
+    };
+  }
+  
+  const mapDispatchToProps = { getItems, addItemsToCart, changeBasketItems};
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(TransitionsModal);
